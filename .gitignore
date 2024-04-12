@@ -1,2 +1,5 @@
 .DS_Store
 lib/__pycache__
+out/
+__pycache__/
+temp/

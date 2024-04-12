@@ -1,0 +1,133 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Debug 2.1",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/main.py",
+                "console": "integratedTerminal",
+                "args": [
+                    "--model", "llama2-7b-chat-hf",
+                    "--prune_method", "wanda",
+                    "--prune_data", "align",
+                    "--sparsity_ratio", "0.5",
+                    "--sparsity_type", "unstructured",
+                    "--neg_prune",
+                    "--save", "out/llama2-7b-chat-hf/unstructured/wanda_weightonly/align/",
+                    "--eval_zero_shot",
+                    "--eval_attack",
+                    "--save_attack_res"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}"
+                }
+            },
+            {
+                "name": "Debug 2.2",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/main.py",
+                "console": "integratedTerminal",
+                "args": [
+                    "--model", "llama2-7b-chat-hf",
+                    "--prune_method", "wanda",
+                    "--prune_data", "align_short",
+                    "--sparsity_ratio", "0.5",
+                    "--p", "0.1",
+                    "--q", "0.1",
+                    "--sparsity_type", "unstructured",
+                    "--save", "out/llama2-7b-chat-hf/unstructured/wanda_weightonly/align/",
+                    "--eval_zero_shot",
+                    "--eval_attack",
+                    "--save_attack_res"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}"
+                }
+            },
+            {
+                "name": "Debug 2.2_2",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/main.py",
+                "console": "integratedTerminal",
+                "args": [
+                    "--model", "llama2-7b-chat-hf",
+                    "--prune_method", "wandg_set_difference",
+                    "--prune_data", "align",
+                    "--sparsity_ratio", "0.5",
+                    "--p", "0.1",
+                    "--q", "0.1",
+                    "--sparsity_type", "unstructured",
+                    "--save", "out/llama2-7b-chat-hf/unstructured/wandg_set_difference_weightonly_test",
+                    "--eval_zero_shot",
+                    "--eval_attack",
+                    "--save_attack_res"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}"
+                }
+            },
+            {
+                "name": "Debug 2.3",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/main.py",
+                "console": "integratedTerminal",
+                "args": [
+                    "--model", "llama2-7b-chat-hf",
+                    "--prune_method", "wanda",
+                    "--prune_data", "align",
+                    "--sparsity_ratio", "0.5",
+                    "--sparsity_type", "unstructured",
+                    "--save", "out/llama2-7b-chat-hf/unstructured/wanda/align/",
+                    "--dump_wanda_score"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}"
+                }
+            },
+            {
+                "name": "Compare",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/main.py",
+                "console": "integratedTerminal",
+                "args": [
+                    "--model", "llama2-7b-chat-hf",
+                    "--prune_data", "align",
+                    "--sparsity_ratio", "0.5",
+                    "--p", "0.05",
+                    "--q", "0.05",
+                    "--sparsity_type", "unstructured",
+                    "--save", "out/llama2-7b-chat-hf/compare/visualize_both/align_vs_alpaca_cleaned_no_safety-5%/",
+                    "--compare",
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}"
+                }
+            },
+            {
+                "name": "Distribution",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/main.py",
+                "console": "integratedTerminal",
+                "args": [
+                    "--model", "llama2-7b-chat-hf",
+                    "--prune_data", "align",
+                    "--sparsity_ratio", "0.5",
+                    "--sparsity_type", "unstructured",
+                    "--save", "out/llama2-7b-chat-hf/distribution/visualize_both/align/",
+                    "--distribution",
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}"
+                }
+            }
+        ]
+}

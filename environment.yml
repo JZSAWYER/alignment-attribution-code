@@ -299,4 +299,4 @@ dependencies:
       - xxhash==3.4.1
       - yarl==1.9.3
       - zstandard==0.22.0
-prefix: /data/your_name/miniconda3/envs/prune_llm
+prefix: /home/v-hazhong/anaconda3/envs/prune_llm

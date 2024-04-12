@@ -23,6 +23,7 @@ from lib.prune import (
 from lib.model_wrapper import prune_wanda_v2, prune_wandg
 from lib.model_wrapper_low import make_low_rank
 from lib.eval import eval_ppl, eval_zero_shot, eval_attack
+from lib.experiment import find_overlap, find_overlap_test, find_distribution
 
 print("torch", version("torch"))
 print("transformers", version("transformers"))
@@ -32,7 +33,7 @@ print("# of gpus: ", torch.cuda.device_count())
 SAVE_PATH = "temp"
 
 modeltype2path = {
-    "llama2-7b-chat-hf": "",
+    "llama2-7b-chat-hf": "/home/v-hazhong/Models/Llama-2-7b-chat-hf",
     "llama2-13b-chat-hf": "",
     "llama2-7b-hf": "",
     "llama2-13b-hf": "",
@@ -51,7 +52,8 @@ def get_llm(model_name, cache_dir="llm_weights"):
             torch_dtype=torch.bfloat16,
             cache_dir=cache_dir,
             low_cpu_mem_usage=True,
-            device_map="auto",
+            device_map="cuda:0",
+            trust_remote_code=True,
         )
 
     model.seqlen = model.config.max_position_embeddings
@@ -169,6 +171,7 @@ def main():
         "--entangle_prompt_feat",
         dest="disentangle",
         action="store_false",
+        default=False,
         help="entangle the prompt and response when computing the wanda score",
     )
     parser.add_argument(
@@ -180,6 +183,16 @@ def main():
         "--decouple_align_misalign",
         action="store_true",
         help="whether to decouple the align and misalign when computing the wanda score",
+    )
+    parser.add_argument(
+        "--compare",
+        action="store_true",
+        help="whether to compare the overlap of neurons between the two scores",
+    )    
+    parser.add_argument(
+        "--distribution",
+        action="store_true",
+        help="whether to investigate the distribution of neurons",
     )
 
     # low rank
@@ -250,6 +263,51 @@ def main():
     if args.save_model:
         model.save_pretrained(args.save_model)
         tokenizer.save_pretrained(args.save_model)
+
+    if args.compare:
+        print("comparing between snip and wanda scores")
+        # find_overlap(
+        #         args,
+        #         model,
+        #         tokenizer,
+        #         model_base,
+        #         device,
+        #         prune_n=prune_n,
+        #         prune_m=prune_m,
+        #         prune_data=args.prune_data,
+        #         p=args.p,
+        #         q=args.q,
+        # )
+        find_overlap_test(
+            args=args,
+            model=model,
+            tokenizer=tokenizer,
+            model_base=model_base,
+            device=device,
+            prune_n=prune_n,
+            prune_m=prune_m,
+            prune_data=args.prune_data,
+            prune_data_2="alpaca_cleaned_no_safety",
+            p=args.p,
+            q=args.q,
+        )
+        return
+    elif args.distribution:
+        print("finding distribution of snip and wanda score")
+        find_distribution(
+            args,
+            model,
+            tokenizer,
+            model_base,
+            device,
+            prune_n=prune_n,
+            prune_m=prune_m,
+            prune_data=args.prune_data,
+            p=args.p,
+            q=args.q,
+        )
+        return
+
 
     if args.sparsity_ratio != 0:
         print("pruning starts")
