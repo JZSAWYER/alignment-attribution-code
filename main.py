@@ -37,6 +37,7 @@ modeltype2path = {
     "llama2-13b-chat-hf": "",
     "llama2-7b-hf": "",
     "llama2-13b-hf": "",
+    "llama3-8b-instruct": "/home/v-hazhong/Models/Meta-Llama-3-8B-Instruct",
 }
 
 
@@ -46,13 +47,14 @@ def get_llm(model_name, cache_dir="llm_weights"):
         "llama2-13b-chat-hf",
         "llama2-7b-hf",
         "llama2-13b-hf",
+        "llama3-8b-instruct",
     ]:
         model = AutoModelForCausalLM.from_pretrained(
             modeltype2path[model_name],
             torch_dtype=torch.bfloat16,
             cache_dir=cache_dir,
             low_cpu_mem_usage=True,
-            device_map="cuda:0",
+            device_map="cuda:2",
             trust_remote_code=True,
         )
 
